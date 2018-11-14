@@ -10,8 +10,66 @@ body {
     list-style: none;
 }
 
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+
+@-webkit-keyframes marquee {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+
+    100% {
+        -webkit-transform: translate(-100%, 0);
+        transform: translate(-100%, 0);
+    }
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
 :root {
     --bg: rgb(16, 16, 16);
+    --complete: rgb(122, 255, 81);
+    --incomplete: rgb(179, 40, 40);
 }
 
 #container {
@@ -37,18 +95,40 @@ body {
     top: 15%;
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: center;
     align-items: center;
 }
 
-#list {
+#sidebar {
     width: 35%;
     left: 3%;
+    height: 100%;
+    position: relative;
+}
+
+#list {
+    width: 100%;
+    top: 5%;
     border-radius: 5px;
     background-color: rgb(24, 24, 29);
     position: relative;
     border: 1px solid black;
+    transition: all 300ms ease-out;
+}
+
+#list ul {
+    display: none;
+    opacity: 0;
+}
+
+#list ul.active {
+    display: block !important;
+    opacity: 1;
+    -webkit-animation: fadeInFromNone 1.3s ease-out;
+    -moz-animation: fadeInFromNone 1.3s ease-out;
+    -o-animation: fadeInFromNone 1.3s ease-out;
+    animation: fadeInFromNone 1.3s ease-out;
 }
 
 #list li {
@@ -59,7 +139,6 @@ body {
 #list h1 {
     font-size: 25px;
     padding: 3px;
-    margin-bottom: 15px;
     box-shadow: 0 1px 0 rgba(90, 90, 90, 0.7);
     width: 90%;
 }
@@ -72,7 +151,7 @@ body {
     border-radius: 5px;
     padding: 1.7% 1.3%;
     text-decoration: none;
-    top: 10%;
+    line-height: 3em;
     transition: all 0.2s;
 }
 
@@ -92,12 +171,13 @@ body {
     align-items: center;
 }
 
-#clock{
+#clock {
     font-size: 35px;
 }
 
 #dw {
-    width: 75%;
+    width: auto;
+    padding: 0.4% 1.5%;
     background-color: rgb(24, 24, 29);
     border-radius: 5px;
     margin: 1%;
@@ -113,13 +193,466 @@ body {
 
 #temp {
     margin-left: 15px;
+    text-transform: capitalize;
 }
 
 #weather {
     flex-direction: row;
     display: flex;
+    margin-left: 15px;
+    justify-content: center;
+    align-items: center;
 }
 
-#temp{
-    text-transform: capitalize;
+#icon {
+    color: crimson;
+}
+
+#appbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    top: 5%;
+    height: 10%;
+    z-index: 2;
+    width: 70%;
+    left: 15%
+}
+
+#appbar a {
+    color: crimson;
+    cursor: pointer;
+}
+
+#appbar div {
+    width: 25px;
+    text-align: center;
+    margin-right: 15px;
+}
+
+#search, #notescreen, #settings {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 0%;
+    width: 100%;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s;
+}
+
+#notescreen, #settings {
+    flex-flow: column !important;
+}
+#search input {
+    border: none;
+    width: 60%;
+    height: 5%;
+    text-align: center;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    color: white;
+    font-size: 2em;
+}
+
+#close {
+    position: relative;
+    left: 1%;
+    cursor: pointer;
+}
+
+.disable {
+    display: none !important;
+}
+
+#search.active,
+#notescreen.active,
+#settings.active {
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 100% !important;
+}
+
+.tooltip {
+    display: inline;
+    position: relative;
+}
+
+.tooltip:hover:after {
+    background: #333;
+    background: rgba(0, 0, 0, .8);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(data-tooltip);
+    left: -10%;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 98;
+    width: auto;
+}
+
+.tooltip:hover:before {
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 25%;
+    position: absolute;
+    z-index: 99;
+}
+
+#note {
+    font-size: 1.25em;
+}
+
+
+#notescreen textarea {
+    border: none;
+    outline: none;
+    height: 0%;
+    width: 20%;
+    padding: 16px;
+    overflow: hidden;
+    background-color: #1F2326;
+    color: #7291a1;
+    resize: none;
+    transition: all 1s;
+    opacity: 0;
+}
+
+#notescreen.active textarea {
+    height: 50%;
+    opacity: 1;
+}
+
+#noteheader li {
+    background-color: 1F2326;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 20% 20% 0% 0%;
+    display: inline;
+}
+
+#notes.active {
+    color: crimson;
+}
+
+#todo.active {
+    color: crimson;
+}
+
+#todoarea {
+    width: 20%;
+    height: 0%;
+    transition: all 1s;
+}
+
+#todoarea.active {
+    width: 20%;
+    height: 50%;
+    transition: all 1s;
+}
+
+#todoarea input {
+    margin: 5%;
+    width: 90%;
+    opacity: 0;
+    visibility: hidden;
+    background-color: transparent;
+    border: none;
+    box-shadow: 0 2px 0 rgb(255, 255, 255);
+    padding: 3px 0px;
+    color: white;
+}
+
+#todoarea.active input {
+    visibility: visible;
+    opacity: 1;
+    transition: all 1s;
+}
+
+
+#todoarea.active~#notepad {
+    visibility: hidden;
+    height: 0%;
+    padding: 0px;
+    transition: all 1s;
+    opacity: 0;
+}
+
+#todos {
+    height: 100%;
+    width: 100%;
+    background-color: #1F2326;
+    color: #7291a1;
+    overflow: auto;
+}
+
+#todolist {
+    word-break: break-all;
+    padding: 0% 2% 0% 3%;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+#todolist li {
+    display: flex;
+    flex-flow: row wrap;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    background-color: rgba(15, 11, 11, 0.5);
+    padding: 1%;
+    margin: 2%;
+    color: white;
+}
+
+#todolist li div {
+    width: 33.3%;
+    border-bottom: solid 2px rgb(50, 50, 50);
+    padding: 1.5% 0% 0% 0%;
+}
+
+#todolist li i {
+    cursor: pointer;
+}
+
+#todolist li.complete {
+    border-left: solid 3px var(--complete);
+    border-right: solid 3px var(--complete);
+    transition: .2s all
+}
+
+#todolist li.incomplete {
+    border-left: solid 3px var(--incomplete);
+    border-right: solid 3px var(--incomplete);
+    transition: .2s all
+}
+
+#todolist li p {
+    width: 100%;
+    padding: 1% 0% 0% 0%;
+}
+
+#todolist li p:first-child,
+#todolist li p:nth-child(2) {
+    border-bottom: solid 2px rgb(50, 50, 50);
+    height: 1.5em;
+    width: 33.3%;
+}
+
+#todolist li p:nth-child(2) {
+    font-weight: bold;
+    transition: 0.3s all;
+}
+
+#todolist li:hover p:nth-child(2) {
+    color: crimson;
+    transition: 0.3s all;
+}
+
+#todolist li p:last-child {
+    color: grey;
+    margin-top: 2%;
+}
+
+#lowbar {
+    width: 95%;
+    padding: 0.4% 1.5%;
+    background-color: rgb(24, 24, 29);
+    border-radius: 5px;
+    margin: 1%;
+    position: relative;
+    top: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+#lowbar a {
+    margin-right: 10px;
+}
+
+#lowbar a:first-child {
+    padding-left: 100%;
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+}
+
+#marquee {
+    width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.reddit:link {
+    color: white;
+}
+
+#reddup::before, #redddown::before {
+    color: crimson;
+    margin-right: 10px;
+}
+
+#pagenumber {
+    position: relative;
+    left: 95%;
+    bottom: 15%;
+    width: 3%;
+    text-align: center;
+    border-bottom: 1px solid crimson;
+}
+
+#reddnext {
+    cursor: pointer;
+    color: crimson;
+}
+
+#settingsarea {
+    background: #1F2326;
+    width: 30%;
+    height: 20%;
+}
+
+#dateclose {
+    display: none;
+    position: relative;
+    left: -3%;
+    font-size: 13px;
+}
+
+#settingscenter {
+    margin-left: 5%;
+}
+
+#settings ul {
+    width: 95%;
+}
+
+.input {
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 1);
+    color: white;
+    width: 50%;
+    margin-left: 2%;
+}
+
+#settingscenter li {
+    border-bottom: 1px dotted rgb(90, 90, 90, 0.7);
+    padding-bottom: 2%;
+    position: relative;
+    margin-bottom: 3%;
+}
+
+#settingsclose {
+    position: relative;
+    margin-top: 3%;
+    left: 93%;
+    cursor: pointer;
+}
+
+.button {
+    background-color: rgba(100, 100, 100, 0.2);
+    box-shadow: 0 1px 0 rgba(150, 150, 150, 1);
+    color: white;
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 1.2% 1%;
+    border: none;
+    margin-left: 2%;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 0 0px 0 rgba(50, 50, 50, 1);
+    padding: 1.7% 1.7%;
+}
+
+#cat {
+    position: absolute;
+    left: 80%;
+    bottom: 30px;
+    height: 251px;
+    width: 251px;
+    transition: left 2s, bottom 2s;
+}
+
+#cat:hover:after {
+    background: #333;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 15px;
+    bottom: 100%;
+    color: #000;
+    content: attr(cat-talk);
+    text-align: center;
+    padding: 5px 5px;
+    position: absolute;
+    left: -60%;
+    z-index: 98;
+    width: 300px;
+    transition: left 1s;
+}
+
+#cat:hover:before {
+    border: solid;
+    border-color: #fff transparent;
+    border-width: 6px 6px 0 6px;
+    content: "";
+    bottom: 97.7%;
+    left: 45%;
+    position: absolute;
+    z-index: 99;
+}
+
+.flip {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+#cat.hover:after {
+    background: #333;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 15px;
+    bottom: 100%;
+    color: #000;
+    content: attr(cat-talk);
+    text-align: center;
+    padding: 5px 5px;
+    position: absolute;
+    left: -60%;
+    z-index: 98;
+    width: 300px;
+    transition: left 1s;
+}
+
+#cat.hover:before {
+    border: solid;
+    border-color: #fff transparent;
+    border-width: 6px 6px 0 6px;
+    content: "";
+    bottom: 97.7%;
+    left: 45%;
+    position: absolute;
+    z-index: 99;
 }
