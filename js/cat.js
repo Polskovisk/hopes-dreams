@@ -56,7 +56,7 @@ var style = (function () {
 })();
 
 function cat() {
-    if (date.getDate() !== 16) {
+    if (date.getDate() !== 15) {
         $.gI('catimage').src = images[0]
         $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 10 + 2)])
         $.gI('cat').classList.add('hover')
@@ -64,6 +64,12 @@ function cat() {
             removerHover()
         }, 7000);
         setInterval(floating, 2000)
+
+        setTimeout(() => {
+            setInterval(cattalk, 15000)
+            cattalk()
+        }, 10000);
+
     } else {
         $.gI('catimage').src = images[1]
         $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 2)])
@@ -71,7 +77,9 @@ function cat() {
         cat.style.bottom = '0';
         cat.style.left = '0';
         cat.style.height = '198px'
-        cat.style.width = '498px'
+        cat.style.width = '498px' 
+        style.sheet.insertRule('#cat:hover::after{ left: 15%;}', 0);
+        style.sheet.insertRule('#cat.hover:after{ left: 15%;}', 0);
 
         $.gI('cat').classList.add('hover')
 
@@ -79,7 +87,7 @@ function cat() {
             removerHover()
         }, 7000);
 
-        style.sheet.insertRule('#cat:hover::after{ left: 15%;}', 0);
+       
     }
     if (!localStorage.username && localStorage.username == '') {
         window.onload = function () {
@@ -87,11 +95,6 @@ function cat() {
             localStorage.username = person;
         }
     }
-
-    setTimeout(() => {
-        setInterval(cattalk, 15000)
-        cattalk()
-    }, 10000);
 }
 
 
