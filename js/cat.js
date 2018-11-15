@@ -56,7 +56,7 @@ var style = (function () {
 })();
 
 function cat() {
-    if (date.getDate() !== 15) {
+    if (date.getDate() !== 32) {
         $.gI('catimage').src = images[0]
         $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 10 + 2)])
         $.gI('cat').classList.add('hover')
