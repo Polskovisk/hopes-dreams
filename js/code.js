@@ -14,8 +14,14 @@ function engines() {
     };
 }
 
+const date = new Date();
+
 if (localStorage.getItem('location') == null) {
     localStorage.location = 'são paulo';
+}
+
+if (localStorage.getItem('username') == null) {
+    localStorage.username = '';
 }
 
 if (localStorage.getItem('randompost') == null) {
@@ -82,9 +88,8 @@ HTMLElement.prototype.disable = function () {
     return this.classList.toggle('disable');
 }
 
-new Weather(city).loadweather;
 new reddit(localStorage.redditsub).loadreddit;
-
+new Weather(localStorage.location).loadweather;
 
 function updatereddit() {
     localStorage.posts = parseInt($.gC('reddit')[0].id) + 1
