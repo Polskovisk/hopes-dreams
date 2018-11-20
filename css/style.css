@@ -12,23 +12,45 @@ body {
 
 @keyframes marquee {
     0% {
-        transform: translate(0, 0);
+        text-indent: 100%;
     }
 
     100% {
-        transform: translate(-100%, 0);
+        text-indent: -100%;
     }
 }
 
 @-webkit-keyframes marquee {
     0% {
-        -webkit-transform: translate(0, 0);
-        transform: translate(0, 0);
+        text-indent: 100%;
     }
 
     100% {
-        -webkit-transform: translate(-100%, 0);
-        transform: translate(-100%, 0);
+        text-indent: -100%;
+    }
+}
+
+@keyframes catdrugs {
+    0% {
+        filter: hue-rotate(0deg);
+        -webkit-filter: hue-rotate(0deg)
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+        -webkit-filter: hue-rotate(360deg)
+    }
+}
+
+@-webkit-keyframes catdrugs {
+    0% {
+        filter: hue-rotate(0deg);
+        -webkit-filter: hue-rotate(0deg)
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+        -webkit-filter: hue-rotate(360deg)
     }
 }
 
@@ -231,8 +253,24 @@ body {
     margin-right: 15px;
 }
 
-#search, #notescreen, #settings {
-    background-color: rgba(0, 0, 0, 0.3);
+#search {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 0%;
+    width: 100%;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s;
+}
+
+#notescreen,
+#settings {
+    background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
     flex-flow: row wrap;
     justify-content: center;
@@ -246,9 +284,11 @@ body {
     transition: all 1s;
 }
 
-#notescreen, #settings {
+#notescreen,
+#settings {
     flex-flow: column !important;
 }
+
 #search input {
     border: none;
     width: 60%;
@@ -263,8 +303,9 @@ body {
 
 #close {
     position: relative;
-    left: 1%;
+    left: 31%;
     cursor: pointer;
+    top: -5%
 }
 
 .disable {
@@ -493,9 +534,9 @@ body {
 }
 
 #lowbar a:first-child {
-    padding-left: 100%;
     display: inline-block;
-    animation: marquee 15s linear infinite;
+    overflow: hidden;
+    animation: marquee 18s linear infinite;
 }
 
 #marquee {
@@ -508,7 +549,8 @@ body {
     color: white;
 }
 
-#reddup::before, #redddown::before {
+#reddup::before,
+#redddown::before {
     color: crimson;
     margin-right: 10px;
 }
@@ -595,7 +637,7 @@ body {
     bottom: 30px;
     height: 251px;
     width: 251px;
-    transition: left 2s, bottom 2s;
+    transition: left 2s, bottom 2s, -webkit-filter 2s;
 }
 
 #cat:hover:after {
@@ -655,4 +697,37 @@ body {
     left: 36%;
     position: absolute;
     z-index: 99;
+}
+
+.catdrugs {
+    animation: catdrugs 1s linear infinite;
+    -webkit-animation: catdrugs 1s linear infinite;
+}
+
+#scrhengs {
+    display: flex;
+    padding-top: 0.5%;
+    height: 2%;
+    width: 60%;
+}
+
+#scrhengs li {
+    margin-right: 1%;
+}
+
+#scrhengs li::after {
+    content: '';
+    display: block;
+    width: 0%;
+    background: transparent;
+}
+
+#scrhengs li.active::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: crimson;
+    transition: width .5s ease-in-out,
+    background-color .5s ease-in-out;
 }

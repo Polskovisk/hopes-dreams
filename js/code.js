@@ -24,6 +24,18 @@ if (localStorage.getItem('username') == null) {
     localStorage.username = '';
 }
 
+if (localStorage.getItem('catsleep') == null) {
+    localStorage.catsleep = 0;
+}
+
+if (localStorage.getItem('olddate') == null) {
+    localStorage.olddate = date;
+}
+
+if (localStorage.getItem('catsleep_control') == null) {
+    localStorage.catsleep_control = true;
+}
+
 if (localStorage.getItem('randompost') == null) {
     localStorage.randompost = false;
 }

@@ -45,6 +45,8 @@ const images = [
     "./img/catlove.gif"
 ]
 
+var catsleep = parseInt(localStorage.catsleep)
+
 var style = (function () {
     // Create the <style> tag
     var style = document.createElement("style");
@@ -56,47 +58,45 @@ var style = (function () {
 })();
 
 function cat() {
-    if (date.getDate() !== 15) {
-        $.gI('catimage').src = images[0]
-        $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 10 + 2)])
-        $.gI('cat').classList.add('hover')
-        setTimeout(() => {
-            removerHover()
-        }, 7000);
-        setInterval(floating, 2000)
+    $.gI('catimage').src = images[0]
+    $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 10 + 2)])
+    $.gI('cat').classList.add('hover')
+    setTimeout(() => {
+        removerHover()
+    }, 7000);
+    setInterval(floating, 2000)
 
-        setTimeout(() => {
-            setInterval(cattalk, 15000)
-            cattalk()
-        }, 10000);
+    setTimeout(() => {
+        setInterval(cattalk, 15000)
+        cattalk()
+    }, 10000);
 
-    } else {
-        $.gI('catimage').src = images[1]
-        $.gI('cat').setAttribute('cat-talk', frases[Math.floor(Math.random() * 2)])
-        var cat = $.gI('cat');
-        cat.style.bottom = '0';
-        cat.style.left = '0';
-        cat.style.height = '198px'
-        cat.style.width = '498px' 
-        style.sheet.insertRule('#cat:hover::after{ left: 15%;}', 0);
-        style.sheet.insertRule('#cat.hover:after{ left: 15%;}', 0);
-
-        $.gI('cat').classList.add('hover')
-
-        setTimeout(() => {
-            removerHover()
-        }, 7000);
-
-       
-    }
     if (!localStorage.username && localStorage.username == '') {
         window.onload = function () {
             var person = prompt("Please enter your name", "");
             localStorage.username = person;
         }
     }
+
+    sleep();
 }
 
+function sleep() {
+    if (localStorage.catsleep_control == 'false') {
+        var past = new Date(localStorage.olddate).getTime()
+        var difdate = (date.getTime() - past)
+        var min = 1000 * 60 * 10;
+        console.log(difdate)
+        if (difdate >= min) {
+            localStorage.olddate = date
+            localStorage.catsleep_control = true;
+            localStorage.catsleep = 0
+        }
+    } else if (catsleep < 2) {
+        catsleep += 1
+        localStorage.catsleep = catsleep
+    }
+}
 
 function floating() {
     var cat = $.gI('cat');
@@ -124,15 +124,27 @@ function removerHover() {
 function cattalk() {
     //Load frase entre tempos random
     var hora = checkTime(date.getHours());
-    var chance = Math.random();
+    var cat = $.gI('cat');
 
-    if (hora >= 22 && chance < 0.4) {
-        $.gI('cat').setAttribute('cat-talk', interativehour[Math.floor(Math.random() * 1)])
-            $.gI('cat').classList.add('hover')
+    if (localStorage.catsleep_control == 'true' && hora <= 7 && hora >= 0) {
+        if (localStorage.catsleep == 1) {
+            cat.setAttribute('cat-talk', interativehour[0])
+        } else if (localStorage.catsleep == 2) {
+            cat.setAttribute('cat-talk', interativehour[1])
+            localStorage.catsleep_control = false;
+        }
     } else {
-            $.gI('cat').setAttribute('cat-talk', interative[Math.floor(Math.random() * 18)])
-            $.gI('cat').classList.add('hover')
+        var random = Math.floor(Math.random() * 18)
+            if (random == 9) {
+                cat.classList.add('catdrugs')
+                setTimeout(() => {
+                    cat.classList.remove('catdrugs')
+                }, 14000);
+            }
+        cat.setAttribute('cat-talk', interative[random])
     }
+
+    cat.classList.add('hover')
 
     setTimeout(() => {
         removerHover()
