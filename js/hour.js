@@ -14,4 +14,4 @@ function buildDate() {
      return i;
  }
 
-setInterval(buildDate, 900);
+setInterval(buildDate, 500);
